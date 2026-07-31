@@ -1,0 +1,466 @@
+/* =============================================================
+   FAIRGAME SHOP - VISUAL EFFECTS (OPTIONAL EXTRAS)
+   =============================================================
+   Nothing in this file is required by the assignment brief.
+   It only adds decorative flair on top of css/style.css:
+
+   1. Logo hover glow
+   2. Nav link glow + active-page pulse line + particle burst
+   3. Hero background glow orb + heading pixel particles
+   4. Hero product image: pointer-tilt + floating glow (paired
+      with the pointer tracking in js/fx.js)
+   5. Product card 3D tilt + floating product image
+   6. Footer social icon glow + lift
+   7. Responsive tweaks for the effects above
+   8. Reduced-motion overrides (turns every effect below off)
+
+   This file is linked AFTER style.css in every page, so it can
+   safely add to or enhance the core rules without breaking
+   anything if it were removed.
+   ============================================================= */
+
+/* =========================================================
+   1. LOGO HOVER GLOW
+   ========================================================= */
+
+.logo img {
+    transition:
+        filter 280ms ease,
+        transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.logo:hover img,
+.logo:focus-visible img {
+    filter:
+        brightness(1.24)
+        contrast(1.08)
+        drop-shadow(0 0 0.22rem rgba(219, 234, 254, 0.5))
+        drop-shadow(0 0.3rem 0.5rem rgba(96, 165, 250, 0.2));
+    transform: translateY(-0.12rem) scale(1.018);
+}
+
+.logo:active img {
+    filter: brightness(1.08);
+    transform: translateY(0) scale(0.995);
+}
+
+/* =========================================================
+   2. NAV LINK GLOW, ACTIVE-PAGE PULSE LINE, PARTICLE BURST
+   ========================================================= */
+
+nav a::before {
+    background: rgba(255, 82, 22, 0.75);
+    border-radius: inherit;
+    content: "";
+    filter: blur(1rem);
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    inset: 0.2rem;
+    z-index: -1;
+    transition: opacity 0.2s ease;
+}
+
+nav a[aria-current="page"] {
+    text-shadow:
+        0 0 0.45rem rgba(255, 122, 50, 0.75),
+        0 0 1rem rgba(255, 68, 12, 0.4);
+}
+
+nav a[aria-current="page"]::before {
+    opacity: 0.4;
+}
+
+nav a[aria-current="page"]::after {
+    animation: nav-energy-line 2.4s ease-in-out infinite;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #ff681c 22%,
+        #ff9a52 50%,
+        #ff681c 78%,
+        transparent
+    );
+    border-radius: 999px;
+    bottom: 0.18rem;
+    content: "";
+    filter: drop-shadow(0 0 0.3rem rgba(255, 104, 28, 0.95));
+    height: 0.12rem;
+    left: 12%;
+    opacity: 0.75;
+    position: absolute;
+    transform-origin: center;
+    width: 76%;
+}
+
+/* Makes the orange line under the current page gently pulse. */
+@keyframes nav-energy-line {
+    0%,
+    100% {
+        opacity: 0.55;
+        transform: scaleX(0.88);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+.nav-particle-layer {
+    overflow: visible;
+    pointer-events: none;
+    position: absolute;
+    inset: -0.8rem;
+    z-index: -1;
+}
+
+.nav-particle {
+    width: var(--nav-particle-size);
+    height: var(--nav-particle-size);
+    border-radius: 50%;
+    background: var(--nav-particle-color);
+    box-shadow: 0 0 0.55rem var(--nav-particle-color);
+    opacity: 0;
+    position: absolute;
+    left: var(--nav-particle-x);
+    top: var(--nav-particle-y);
+    animation: nav-particle-rise var(--nav-particle-duration) ease-out forwards;
+}
+
+/* Moves the small menu particles upwards while they disappear. */
+@keyframes nav-particle-rise {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.4);
+    }
+
+    22% {
+        opacity: 0.7;
+        transform: translate(0, -0.15rem) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translate(var(--nav-particle-drift-x), var(--nav-particle-drift-y))
+            scale(0.15);
+    }
+}
+
+/* =========================================================
+   3. HERO BACKGROUND GLOW ORB + HEADING PIXEL PARTICLES
+   ========================================================= */
+
+.hero::before {
+    width: 68%;
+    height: 82%;
+    background:
+        radial-gradient(
+            ellipse at 22% 48%,
+            rgba(255, 112, 24, 0.2),
+            rgba(255, 48, 0, 0.08) 34%,
+            transparent 68%
+        ),
+        radial-gradient(
+            ellipse at 55% 55%,
+            rgba(24, 103, 255, 0.14),
+            transparent 64%
+        );
+    content: "";
+    filter: blur(2.2rem);
+    pointer-events: none;
+    position: absolute;
+    top: 8%;
+    left: -8%;
+    z-index: -1;
+    animation: text-glow 4.2s ease-in-out infinite;
+}
+
+/* Pulses the softer orange and blue light behind the hero text. */
+@keyframes text-glow {
+    0%,
+    100% {
+        opacity: 0.58;
+        transform: scale(0.98);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.03);
+    }
+}
+
+/* Keeps the heading still while allowing particles to travel around it. */
+.hero-heading-effect {
+    overflow: visible;
+    position: relative;
+}
+
+.pixel-particles {
+    overflow: visible;
+    pointer-events: none;
+    position: absolute;
+    inset: -12%;
+    z-index: 1;
+}
+
+.pixel-particle {
+    width: var(--pixel-size);
+    height: var(--pixel-size);
+    background: var(--pixel-color);
+    box-shadow: 0 0 var(--pixel-glow) var(--pixel-color);
+    opacity: 0;
+    position: absolute;
+    left: var(--pixel-x);
+    top: var(--pixel-y);
+    animation: pixel-dissolve var(--pixel-duration) ease-out forwards;
+}
+
+/* Creates the burning/dissolving square movement behind the heading. */
+@keyframes pixel-dissolve {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.4) rotate(0deg);
+    }
+
+    18% {
+        opacity: var(--pixel-opacity);
+        transform: translate(0, -0.15rem) scale(1) rotate(12deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translate(var(--pixel-drift-x), var(--pixel-drift-y))
+            scale(0.2)
+            rotate(var(--pixel-rotation));
+    }
+}
+
+/* =========================================================
+   4. HERO PRODUCT IMAGE: POINTER TILT + FLOATING GLOW
+   --keyboard-rotate-x/y are updated live by js/fx.js as the
+   pointer moves over the image.
+   ========================================================= */
+
+.hero-visual {
+    --keyboard-rotate-x: 0deg;
+    --keyboard-rotate-y: 0deg;
+}
+
+.hero-visual img {
+    filter:
+        drop-shadow(0 0 1.5rem rgba(255, 120, 0, 0.35))
+        drop-shadow(0 1.5rem 2.5rem rgba(0, 0, 0, 0.8));
+    transform:
+        perspective(70rem)
+        rotateX(var(--keyboard-rotate-x))
+        rotateY(var(--keyboard-rotate-y))
+        scale(1.01);
+    transition: transform 0.25s ease-out;
+    will-change: transform;
+}
+
+.hero-glow {
+    width: 92%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 248, 220, 0.78) 0%,
+        rgba(255, 172, 56, 0.62) 15%,
+        rgba(255, 76, 0, 0.45) 38%,
+        rgba(28, 101, 255, 0.25) 60%,
+        transparent 76%
+    );
+    filter: blur(3.5rem);
+    position: absolute;
+    inset: 3% 0 auto 4%;
+    animation: signal-glow 2.8s ease-in-out infinite;
+}
+
+/* Slowly changes the strength and size of the hero image light. */
+@keyframes signal-glow {
+    0%,
+    100% {
+        opacity: 0.62;
+        transform: scale(0.98);
+    }
+
+    50% {
+        opacity: 0.82;
+        transform: scale(1.03);
+    }
+}
+
+/* Gives the hero image its gentle up-and-down floating movement
+   (only runs once the image is visible, from desktop up). */
+@keyframes keyboard-float {
+    0%,
+    100% {
+        transform: translateY(0) rotate(-0.4deg);
+    }
+
+    50% {
+        transform: translateY(-0.75rem) rotate(0.6deg);
+    }
+}
+
+/* =========================================================
+   5. PRODUCT CARDS: 3D TILT + FLOATING PRODUCT IMAGE
+   ========================================================= */
+
+.product-grid {
+    perspective: 75rem;
+}
+
+.product-card {
+    transform: translateY(0) rotateX(0) rotateY(0);
+    transform-style: preserve-3d;
+}
+
+.product-card:hover,
+.product-card:focus-within {
+    transform: translateY(-0.6rem) rotateX(2deg) rotateY(-2deg);
+}
+
+/* Alternates the tilt direction so neighbouring cards don't
+   all lean the same way. */
+.product-card:nth-child(even):hover,
+.product-card:nth-child(even):focus-within {
+    transform: translateY(-0.6rem) rotateX(2deg) rotateY(2deg);
+}
+
+.product-image img {
+    animation: product-float 4.2s ease-in-out infinite;
+    animation-delay: var(--float-delay);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img,
+.product-card:focus-within .product-image img {
+    transform: scale(1.06);
+}
+
+/* Keeps product pictures gently floating without moving the cards. */
+@keyframes product-float {
+    0%,
+    100% {
+        translate: 0 0;
+    }
+
+    50% {
+        translate: 0 -0.45rem;
+    }
+}
+
+/* =========================================================
+   6. FOOTER SOCIAL ICON GLOW + LIFT
+   ========================================================= */
+
+footer .footer-nav a:hover,
+footer .footer-nav a:focus-visible {
+    text-shadow: 0 0 0.6rem rgba(255, 106, 26, 0.45);
+}
+
+.footer-socials a:hover,
+.footer-socials a:focus-visible {
+    box-shadow: 0 0 0.75rem rgba(255, 106, 26, 0.25);
+    transform: translateY(-0.12rem);
+}
+
+/* =========================================================
+   7. RESPONSIVE TWEAKS FOR THE EFFECTS ABOVE
+   ========================================================= */
+
+@media (max-width: 39.99rem) {
+    .hero::before {
+        width: 100%;
+        left: -20%;
+    }
+
+    /* Glow/particles are too busy for the compact mobile menu. */
+    header nav a::before,
+    .nav-particle-layer,
+    .nav-particle {
+        display: none;
+    }
+
+    header nav a[aria-current="page"] {
+        text-shadow: none;
+    }
+}
+
+@media (min-width: 64rem) {
+    .hero-visual {
+        animation: keyboard-float 4.8s ease-in-out infinite;
+    }
+}
+
+/* =========================================================
+   8. ACCESSIBILITY: REDUCED MOTION
+   Turns off every animation/transform added by this file when
+   the user's operating system requests reduced motion.
+   (js/fx.js also checks this preference before starting.)
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .logo img {
+        transition: none;
+    }
+
+    .logo:hover img,
+    .logo:focus-visible img,
+    .logo:active img {
+        transform: none;
+    }
+
+    .footer-socials a:hover,
+    .footer-socials a:focus-visible {
+        transform: none;
+    }
+
+    .hero::before,
+    .hero-glow,
+    .hero-visual {
+        animation: none;
+    }
+
+    .hero-visual img {
+        transform: none;
+        transition: none;
+    }
+
+    .pixel-particle {
+        display: none;
+        animation: none;
+    }
+
+    .nav-particle {
+        display: none;
+        animation: none;
+    }
+
+    nav a[aria-current="page"]::after {
+        animation: none;
+        opacity: 0.75;
+        transform: none;
+    }
+
+    .product-image img {
+        animation: none;
+    }
+
+    .product-card:hover,
+    .product-card:focus-within,
+    .product-card:nth-child(even):hover,
+    .product-card:nth-child(even):focus-within {
+        transform: none;
+    }
+
+    .product-card:hover .product-image img,
+    .product-card:focus-within .product-image img {
+        transform: none;
+    }
+}

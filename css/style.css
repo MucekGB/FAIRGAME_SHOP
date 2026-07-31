@@ -1,0 +1,1052 @@
+/* =============================================================
+   FAIRGAME SHOP - CORE STYLESHEET
+   =============================================================
+   This file contains everything the assignment brief actually
+   requires: page structure, colour theme, typography, product
+   cards, forms, cart, footer and full mobile-first responsive
+   layout (mobile -> tablet -> desktop).
+
+   Purely decorative extras (glow, particles, 3D tilt, floating
+   animation) live in fx.css and are loaded AFTER this file, so
+   they layer on top without changing anything in here.
+   ============================================================= */
+
+/* =========================================================
+   1. BASE STYLES
+   Shared colours, spacing and basic page rules.
+   The file is mobile-first; larger layouts are at the bottom.
+   ========================================================= */
+
+:root {
+    --color-background: #050505;
+    --color-surface: #101010;
+    --color-text: #f5f5f5;
+    --color-muted: #9a9a9a;
+    --color-primary: #ff3514;
+    --color-primary-dark: #c91b00;
+    --color-border: #282828;
+    --content-width: 100rem;
+    --page-gutter: clamp(1rem, 1.25vw, 1.25rem);
+    --section-space: clamp(2rem, 4vw, 4rem);
+    /* same side padding used by the header and the footer */
+    --edge-padding: max(var(--page-gutter), calc((100% - var(--content-width)) / 2));
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow-x: clip;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+.skip-link {
+    padding: 0.75rem 1rem;
+    background: #ffffff;
+    color: #000000;
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 100;
+    transform: translateY(-160%);
+}
+
+/* Hides text visually but screen readers can still read it. */
+.visually-hidden {
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+/* =========================================================
+   2. HEADER AND MAIN NAVIGATION
+   Logo, menu links and the mobile hamburger toggle.
+   (The glow, current-page pulse line and particle burst
+   around these elements are added by fx.css.)
+   ========================================================= */
+
+header {
+    background: transparent;
+    padding-block: 1rem;
+    padding-inline: var(--edge-padding);
+}
+
+.logo {
+    display: inline-block;
+    margin-top: 0.5rem;
+    text-decoration: none;
+}
+
+.logo img {
+    display: block;
+    width: min(20.5rem, 76vw);
+    height: auto;
+    transform-origin: left center;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+nav {
+    isolation: isolate;
+    position: relative;
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: clamp(1.25rem, 2.2vw, 2.75rem);
+    row-gap: 0.75rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav a {
+    display: inline-block;
+    padding: 0.65rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.7rem;
+    background: transparent;
+    color: #ffffff;
+    font-size: clamp(1rem, 1.15vw, 1.25rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    position: relative;
+    isolation: isolate;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+/* Required hover effect: current colour swaps on hover/focus. */
+nav a:hover,
+nav a:focus-visible {
+    color: #ff8a4c;
+}
+
+nav a:focus-visible {
+    outline: 2px solid #ff8a4c;
+    outline-offset: 0.2rem;
+}
+
+/* Marks which page is currently open (aria-current="page"). */
+nav a[aria-current="page"] {
+    color: #ff9a62;
+}
+
+/* =========================================================
+   3. PAGE LAYOUT AND HOME HERO
+   Main content width and the hero section structure.
+   ========================================================= */
+
+main {
+    width: min(
+        calc(100% - var(--page-gutter) - var(--page-gutter)),
+        var(--content-width)
+    );
+    min-height: calc(100vh - 12rem);
+    margin-inline: auto;
+    padding-block: var(--section-space);
+}
+
+.home-page {
+    padding-top: 0;
+}
+
+.hero {
+    display: grid;
+    min-height: clamp(32rem, 65vh, 46rem);
+    align-items: center;
+    padding-block: clamp(2.5rem, 6vw, 6rem);
+    position: relative;
+    isolation: isolate;
+}
+
+.hero-content {
+    max-width: 42rem;
+    position: relative;
+    z-index: 2;
+}
+
+.eyebrow {
+    margin: 0 0 1rem;
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    font-weight: 400;
+    letter-spacing: -0.06em;
+    line-height: 0.86;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-text {
+    max-width: 32rem;
+    margin: 2rem 0;
+    color: var(--color-muted);
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.text-link {
+    color: #ffffff;
+    text-underline-offset: 0.35rem;
+}
+
+/* Hero product image: hidden on mobile, shown from desktop
+   in the responsive section below. The animated tilt/glow is
+   added on top by fx.css. */
+.hero-visual {
+    display: none;
+}
+
+.hero-visual img {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+main > section + section {
+    margin-top: var(--section-space);
+}
+
+/* =========================================================
+   4. BUTTONS AND PRODUCT CARDS
+   Shared buttons, responsive product grid and product cards.
+   Required by the brief: buttons, product card shadows,
+   consistent colour theme, hover effects.
+   ========================================================= */
+
+.button,
+button {
+    display: inline-block;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: var(--color-primary-dark);
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* white text needs the darker red to read well enough, so hover goes brighter instead of darker */
+.button:hover,
+.button:focus-visible,
+button:hover,
+button:focus-visible {
+    background: var(--color-primary);
+}
+
+.product-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+}
+
+.section-heading {
+    margin-bottom: 2rem;
+}
+
+.section-heading h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+}
+
+.product-card {
+    --card-accent: #248cff;
+
+    overflow: hidden;
+    border: 1px solid var(--card-accent);
+    border-radius: 0.75rem;
+    background: var(--color-surface);
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.28);
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+/* Required hover effect: card lifts and its shadow deepens. */
+.product-card:hover,
+.product-card:focus-within {
+    box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.5);
+    transform: translateY(-0.6rem);
+}
+
+.product-image {
+    display: grid;
+    overflow: hidden;
+    min-height: 18rem;
+    place-items: center;
+    padding: 1.5rem;
+    position: relative;
+    background:
+        radial-gradient(
+            circle at 0 0,
+            color-mix(in srgb, var(--card-accent) 22%, transparent) 0,
+            transparent 46%
+        ),
+        #090909;
+}
+
+.product-image img {
+    width: 100%;
+    height: 15rem;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+}
+
+.product-info {
+    padding: 1.25rem;
+}
+
+.product-category {
+    margin: 0 0 0.35rem;
+    color: var(--card-accent, var(--color-primary));
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.product-info h3 {
+    min-height: 3rem;
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.product-bottom {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1.5rem;
+}
+
+.product-price {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.product-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.product-bottom button,
+.product-actions button {
+    padding: 0.65rem 0.9rem;
+}
+
+.secondary-button,
+.remove-button {
+    border: 1px solid var(--color-border);
+    background: transparent;
+}
+
+.secondary-button:hover,
+.secondary-button:focus-visible,
+.remove-button:hover,
+.remove-button:focus-visible {
+    border-color: var(--color-primary);
+    background: #1c1c1c;
+}
+
+.page-intro {
+    max-width: 44rem;
+    margin-bottom: 2rem;
+    color: var(--color-muted);
+}
+
+.content-section {
+    max-width: 48rem;
+}
+
+.content-section h1 {
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+}
+
+.content-section p:not(.eyebrow) {
+    color: #c3c3c3;
+    font-size: 1.1rem;
+}
+
+/* =========================================================
+   5. FORMS, MESSAGES, PRODUCT DIALOG AND CART
+   Contact validation states and JavaScript-generated shop UI.
+   Required by the brief: form validation, product detail view,
+   add/remove/update cart items, dynamic total price.
+   ========================================================= */
+
+form {
+    display: grid;
+    max-width: 40rem;
+    gap: 1rem;
+}
+
+form div {
+    display: grid;
+    gap: 0.35rem;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    font: inherit;
+    color: #111111;
+}
+
+input[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: #ff4d4d;
+    outline: 2px solid rgba(255, 77, 77, 0.3);
+}
+
+.form-message {
+    min-height: 1.5rem;
+    margin: 0;
+}
+
+.form-message.error {
+    color: #ff8585;
+}
+
+.form-message.success {
+    color: #73e6a1;
+}
+
+/* Small toast shown after "Add to cart" (see js/script.js). */
+.shop-message {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.5rem;
+    background: #171717;
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(1rem);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.shop-message.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Product detail view: opened as a <dialog> on the same page
+   (products.html and the home page) instead of a separate file. */
+.product-dialog {
+    width: min(52rem, calc(100% - 2rem));
+    padding: 2rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 1rem;
+    background: #111111;
+    color: var(--color-text);
+}
+
+.product-dialog[open] {
+    display: grid;
+    gap: 2rem;
+}
+
+.product-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(0.35rem);
+}
+
+.product-dialog > img {
+    width: 100%;
+    height: 18rem;
+    object-fit: contain;
+}
+
+.dialog-close {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    justify-self: end;
+    font-size: 1.5rem;
+}
+
+.cart-item {
+    display: grid;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background: var(--color-surface);
+}
+
+.cart-item > img {
+    width: 100%;
+    height: 9rem;
+    object-fit: contain;
+}
+
+.cart-item-info h2 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.cart-item-info p {
+    margin-block: 0.25rem;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.quantity-controls button {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+.quantity-controls span {
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.cart-item-total {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.remove-button {
+    justify-self: start;
+}
+
+.cart-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 1.4rem;
+}
+
+.cart-summary p {
+    margin: 0;
+}
+
+/* Only one total on the page, so an ID makes more sense than a class here. */
+#cart-total {
+    color: var(--color-primary);
+}
+
+.empty-cart {
+    padding: clamp(2rem, 5vw, 4rem);
+    border: 1px dashed var(--color-border);
+    border-radius: 0.75rem;
+    text-align: center;
+}
+
+/* =========================================================
+   6. PARTNERS AND FOOTER
+   Partner logos, footer navigation, credits and social icons.
+   ========================================================= */
+
+.partner-grid {
+    display: grid;
+    gap: 1.5rem;
+    place-items: center;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid #4a2b1e;
+    border-radius: 0.75rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 91, 25, 0.1),
+            rgba(31, 103, 255, 0.055)
+        ),
+        #0b0b0b;
+}
+
+.partner-logo {
+    display: grid;
+    place-items: center;
+    width: 100%;
+}
+
+.partner-logo img {
+    width: min(100%, 22rem);
+    max-height: 5rem;
+    object-fit: contain;
+}
+
+footer {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    margin-top: clamp(3rem, 6vw, 6rem);
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    padding-inline: var(--edge-padding);
+}
+
+.footer-inner {
+    display: grid;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.footer-brand,
+.footer-details {
+    display: grid;
+    gap: 0.25rem;
+    justify-items: center;
+}
+
+.footer-logo {
+    display: block;
+    width: min(10rem, 48vw);
+    text-decoration: none;
+}
+
+.footer-logo span {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1022 / 341;
+    background: #ffffff;
+    mask: url("../media/images/logo.svg") center / contain no-repeat;
+    -webkit-mask: url("../media/images/logo.svg") center / contain no-repeat;
+}
+
+.footer-brand p,
+.footer-details p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.78rem;
+}
+
+.footer-brand p {
+    max-width: 15rem;
+}
+
+.footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 1.15rem;
+}
+
+.footer-centre {
+    display: grid;
+    gap: 0.8rem;
+    justify-items: center;
+}
+
+footer .footer-nav a {
+    padding: 0.2rem 0;
+    border: 0;
+    border-radius: 0;
+    color: #c8c8c8;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+footer .footer-nav a:hover,
+footer .footer-nav a:focus-visible {
+    color: #ffffff;
+}
+
+.footer-socials {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.55rem;
+}
+
+.footer-socials a {
+    display: grid;
+    width: 2.15rem;
+    height: 2.15rem;
+    border: 1px solid #2f2f2f;
+    border-radius: 0.55rem;
+    background: #151515;
+    place-items: center;
+    text-decoration: none;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        transform 160ms ease;
+}
+
+/* Required hover effect: icon border lights up on hover/focus. */
+.footer-socials a:hover,
+.footer-socials a:focus-visible {
+    border-color: rgba(255, 106, 26, 0.75);
+}
+
+.social-icon {
+    display: block;
+    width: 1.15rem;
+    height: 1.15rem;
+    background: #d4d4d4;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    transition: background 160ms ease;
+}
+
+.instagram-icon {
+    mask-image: url("../media/icons/instagram.svg");
+    -webkit-mask-image: url("../media/icons/instagram.svg");
+}
+
+.tiktok-icon {
+    mask-image: url("../media/icons/tiktok.svg");
+    -webkit-mask-image: url("../media/icons/tiktok.svg");
+}
+
+.facebook-icon {
+    mask-image: url("../media/icons/facebook.svg");
+    -webkit-mask-image: url("../media/icons/facebook.svg");
+}
+
+.discord-icon {
+    mask-image: url("../media/icons/discord.svg");
+    -webkit-mask-image: url("../media/icons/discord.svg");
+}
+
+.footer-socials a:hover .social-icon,
+.footer-socials a:focus-visible .social-icon {
+    background: #ff8b4d;
+}
+
+/* =========================================================
+   7. RESPONSIVE LAYOUTS (MOBILE FIRST)
+   Base rules above are written for small screens first.
+   These media queries progressively enhance the layout for
+   larger tablet and desktop viewports.
+   ========================================================= */
+
+/* --- Small phones needing extra layout changes (hamburger menu) --- */
+@media (max-width: 39.99rem) {
+    header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        padding-block: 0.75rem 1rem;
+        text-align: left;
+    }
+
+    .logo {
+        justify-self: start;
+        margin-top: 0.15rem;
+    }
+
+    .logo img {
+        width: min(12.5rem, 58vw);
+        margin: 0;
+        transform-origin: left center;
+    }
+
+    .menu-toggle {
+        display: grid;
+        width: 3rem;
+        height: 2.75rem;
+        padding: 0.65rem;
+        border: 1px solid #333333;
+        border-radius: 0.4rem;
+        background: #121212;
+        justify-self: end;
+        place-content: center;
+        gap: 0.28rem;
+    }
+
+    .menu-toggle:hover,
+    .menu-toggle:focus-visible {
+        border-color: #ff6a1a;
+        background: #181818;
+    }
+
+    .menu-toggle span {
+        display: block;
+        width: 1.45rem;
+        height: 0.14rem;
+        border-radius: 999px;
+        background: #ffffff;
+        transition: transform 180ms ease, opacity 180ms ease;
+    }
+
+    .menu-toggle[aria-expanded="true"] span:first-child {
+        transform: translateY(0.42rem) rotate(45deg);
+    }
+
+    .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle[aria-expanded="true"] span:last-child {
+        transform: translateY(-0.42rem) rotate(-45deg);
+    }
+
+    header nav {
+        display: none;
+        width: 100%;
+        padding-top: 0.65rem;
+        grid-column: 1 / -1;
+    }
+
+    header nav.is-open {
+        display: block;
+    }
+
+    header nav ul {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin: 0;
+        border-top: 1px solid #272727;
+    }
+
+    header nav a {
+        display: block;
+        padding: 0.8rem 0.35rem;
+        border-bottom: 1px solid #1f1f1f;
+        border-radius: 0;
+        font-size: 0.82rem;
+        letter-spacing: 0.06em;
+        text-align: left;
+    }
+
+    header nav a[aria-current="page"] {
+        box-shadow: inset 2px 0 #ff681c;
+        padding-left: 0.75rem;
+    }
+
+    main {
+        min-height: calc(100vh - 16rem);
+    }
+
+    .hero {
+        min-height: 0;
+        padding-block: 3rem 4rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(3rem, 16vw, 4.5rem);
+    }
+
+    .hero-text {
+        margin-block: 1.5rem;
+    }
+
+    .hero-actions {
+        gap: 1rem;
+    }
+
+    .product-image {
+        min-height: 14rem;
+        padding: 1rem;
+    }
+
+    .product-image img {
+        height: 12rem;
+    }
+
+    .product-info h3 {
+        min-height: 0;
+    }
+
+    .product-dialog {
+        width: calc(100% - 1.25rem);
+        padding: 1.25rem;
+    }
+
+    .product-dialog > img {
+        height: 13rem;
+    }
+
+    .cart-item > img {
+        height: 7rem;
+    }
+
+    .cart-summary {
+        padding-inline: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .shop-message {
+        right: 0.75rem;
+        bottom: 0.75rem;
+        left: 0.75rem;
+        text-align: center;
+    }
+
+    footer {
+        margin-top: 2rem;
+    }
+}
+
+/* --- Tablet and up --- */
+@media (min-width: 40rem) {
+    header {
+        display: grid;
+        align-items: center;
+        justify-items: center;
+        gap: 0.75rem;
+    }
+
+    .logo img {
+        width: min(17rem, 42vw);
+        transform-origin: center;
+    }
+
+    nav ul {
+        justify-content: center;
+        margin: 0;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .partner-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-inner {
+        grid-template-columns: minmax(12rem, 1fr) auto minmax(12rem, 1fr);
+        gap: clamp(1.5rem, 4vw, 4rem);
+        text-align: left;
+    }
+
+    .footer-brand {
+        justify-items: start;
+    }
+
+    .footer-details {
+        justify-items: end;
+        text-align: right;
+    }
+
+    .product-dialog[open] {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+
+    .dialog-close {
+        grid-column: 1 / -1;
+    }
+
+    .cart-item {
+        grid-template-columns: 7rem minmax(0, 1fr) auto auto auto;
+    }
+
+    .cart-item > img {
+        height: 7rem;
+    }
+}
+
+/* --- Desktop and up --- */
+@media (min-width: 64rem) {
+    header {
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+
+    .logo img {
+        width: min(20.5rem, 76vw);
+        transform-origin: left center;
+    }
+
+    nav ul {
+        justify-content: flex-end;
+    }
+
+    .hero {
+        grid-template-columns: minmax(0, 0.95fr) minmax(28rem, 1.05fr);
+        gap: 2rem;
+    }
+
+    .hero-visual {
+        display: block;
+        position: relative;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* =========================================================
+   8. ACCESSIBILITY: REDUCED MOTION
+   Keeps the design but removes movement when requested by
+   the user's operating system.
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .menu-toggle span {
+        transition: none;
+    }
+
+    .product-card {
+        transition: none;
+    }
+
+    .product-card:hover,
+    .product-card:focus-within {
+        transform: none;
+    }
+
+    .shop-message {
+        transition: none;
+    }
+}
